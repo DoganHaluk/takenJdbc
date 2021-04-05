@@ -23,7 +23,7 @@ public class BrouwerRepository extends AbstractRepository {
     public List<Brouwers> brouwersOmzetHebbenDieHogerDanGemiddelde() throws SQLException {
         try (var connection = super.getConnection();
              var statement = connection.prepareStatement(
-                     "SELECT id, naam, adres, postcode, gemeente, omzet FROM brouwers WHERE omzet > gemiddelde")) {
+                     "SELECT id, naam, adres, postcode, gemeente, omzet FROM brouwers WHERE omzet > (SELECT Avg(omzet) FROM brouwers)")) {
             var brouwers = new ArrayList<Brouwers>();
             var result = statement.executeQuery();
             while (result.next()) {
