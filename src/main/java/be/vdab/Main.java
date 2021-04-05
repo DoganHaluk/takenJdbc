@@ -3,7 +3,6 @@ package be.vdab;
 import be.vdab.repositories.BierRepository;
 import be.vdab.repositories.BrouwerRepository;
 
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 class Main {
@@ -21,7 +20,8 @@ class Main {
         var repository2 = new BrouwerRepository();
         try {
             System.out.println("De gemiddelde omzet van alle brouwers: ");
-            System.out.print(repository2.toonGemiddeldeOmzetVanAlleBrouwers());
+            System.out.print(repository2.toonGemiddeldeOmzetVanAlleBrouwers()+"\n");
+            repository2.brouwersOmzetHebbenDieHogerDanGemiddelde().forEach(System.out::println);
         } catch (SQLException ex) {
             ex.printStackTrace(System.err);
         }
