@@ -20,6 +20,10 @@ public class BrouwerRepository extends AbstractRepository {
         }
     }
 
+    private Brouwers naarBrouwer(ResultSet result) throws SQLException {
+        return new Brouwers(result.getLong("id"), result.getString("naam"), result.getString("adres"), result.getInt("postcode"), result.getString("gemeente"), result.getBigDecimal("omzet"));
+    }
+
     public List<Brouwers> brouwersOmzetHebbenDieHogerDanGemiddelde() throws SQLException {
         try (var connection = super.getConnection();
              var statement = connection.prepareStatement(
@@ -33,7 +37,16 @@ public class BrouwerRepository extends AbstractRepository {
         }
     }
 
-    private Brouwers naarBrouwer(ResultSet result) throws SQLException {
-        return new Brouwers(result.getLong("id"), result.getString("naam"), result.getString("adres"), result.getInt("postcode"), result.getString("gemeente"), result.getBigDecimal("omzet"));
+    public List<Brouwers> brouwersWaarvanOmzetLigtTussenMinimumEnMaximum(double min,double max) throws SQLException {
+        try (var connection = super.getConnection();
+             var statement = connection.prepareStatement(
+                     "SELECT id, naam, adres, postcode, gemeente, omzet FROM brouwers WHERE omzet BETWEEN '"+min+"' AND '"+max+"' ORDER BY omzet")) {
+            var brouwers = new ArrayList<Brouwers>();
+            var result = statement.executeQuery();
+            while (result.next()) {
+                brouwers.add(naarBrouwer(result));
+            }
+            return brouwers;
+        }
     }
 }
