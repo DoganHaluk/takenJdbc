@@ -52,5 +52,19 @@ class Main {
         } catch (SQLException ex) {
             ex.printStackTrace(System.err);
         }
+
+        System.out.print("Min:");
+        var scanner4 = new Scanner(System.in);
+        var minimum = scanner4.nextDouble();
+        System.out.print("Max:");
+        var scanner5 = new Scanner(System.in);
+        var maximum = scanner5.nextDouble();
+        var repository5 = new BrouwerRepository();
+        try {
+            System.out.println("De omzetten tussen "+minimum+" en "+maximum+" : ");
+            repository5.brouwersWaarvanOmzetLigtTussenMinEnMaxMetStoredProcedure(minimum, maximum).forEach(System.out::println);
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.err);
+        }
     }
 }

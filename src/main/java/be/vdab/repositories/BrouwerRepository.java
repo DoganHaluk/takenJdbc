@@ -38,7 +38,7 @@ public class BrouwerRepository extends AbstractRepository {
         }
     }
 
-    public List<Brouwers> brouwersWaarvanOmzetLigtTussenMinimumEnMaximum(double min,double max) throws SQLException {
+    public List<Brouwers> brouwersWaarvanOmzetLigtTussenMinimumEnMaximum(double min, double max) throws SQLException {
         try (var connection = super.getConnection();
              var statement = connection.prepareStatement(
                      "SELECT id, naam, adres, postcode, gemeente, omzet FROM brouwers WHERE omzet BETWEEN ? AND ? ORDER BY omzet")) {
@@ -53,14 +53,28 @@ public class BrouwerRepository extends AbstractRepository {
         }
     }
 
-    public Optional<Brouwers> vindEenBrouwerOpId(long id) throws SQLException{
+    public Optional<Brouwers> vindEenBrouwerOpId(long id) throws SQLException {
         try (var connection = super.getConnection();
              var statement = connection.prepareStatement(
-                     "SELECT id, naam, adres, postcode, gemeente, omzet FROM brouwers WHERE id = ?")){
+                     "SELECT id, naam, adres, postcode, gemeente, omzet FROM brouwers WHERE id = ?")) {
             statement.setLong(1, id);
             var result = statement.executeQuery();
-            return result.next() ? Optional.of(naarBrouwer(result))
-                    : Optional.empty();
+            return result.next() ? Optional.of(naarBrouwer(result)) : Optional.empty();
+        }
+    }
+
+    public List<Brouwers> brouwersWaarvanOmzetLigtTussenMinEnMaxMetStoredProcedure(double min, double max) throws SQLException {
+        try (var connection = super.getConnection();
+             var statement = connection.prepareCall(
+                     "{call BrouwersMetOmzetTussenMinimumEnMaximum(?, ?)}")) {
+            statement.setDouble(1, min);
+            statement.setDouble(2, max);
+            var brouwers = new ArrayList<Brouwers>();
+            var result = statement.executeQuery();
+            while (result.next()) {
+                brouwers.add(naarBrouwer(result));
+            }
+            return brouwers;
         }
     }
 }
