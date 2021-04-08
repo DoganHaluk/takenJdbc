@@ -1,5 +1,6 @@
 package be.vdab.repositories;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 public class BierRepository extends AbstractRepository {
@@ -20,6 +21,7 @@ public class BierRepository extends AbstractRepository {
              var statementBierenMetAlcoholVanaf85 = connection.prepareStatement(sqlBierenMetAlcoholVanaf85);
              var statementBierenMetAlcoholMeerDan85 = connection.prepareStatement(sqlBierenMetAlcoholMeerDan85);
              var statementVerwijderBrouwer1 = connection.prepareStatement(sqlVerwijderBrouwer1)) {
+            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
             connection.setAutoCommit(false);
             statementBierenMetAlcoholVanaf85.executeUpdate();
             statementBierenMetAlcoholMeerDan85.executeUpdate();
