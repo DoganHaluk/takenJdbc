@@ -38,7 +38,7 @@ public class BierRepository extends AbstractRepository {
                      "SELECT naam FROM bieren WHERE {fn month(sinds)} = ?")) {
             connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
             connection.setAutoCommit(false);
-            statement.setObject(1, maand);
+            statement.setInt(1, maand);
             var namen= new ArrayList<String>();
             var result = statement.executeQuery();
             while (result.next()) {
