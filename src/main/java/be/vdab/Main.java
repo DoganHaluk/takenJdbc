@@ -79,6 +79,10 @@ class Main {
         System.out.print("Maand:");
         var scanner6 = new Scanner(System.in);
         var maand = scanner6.nextInt();
+        while (maand < 1 || maand > 12) {
+            System.out.println("Verkeerd, maand:");
+            maand = scanner6.nextInt();
+        }
         var repository6 = new BierRepository();
         try {
             System.out.print("De bieren die voor het eerst verkocht zijn in die maand: \n");
