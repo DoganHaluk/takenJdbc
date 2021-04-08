@@ -12,9 +12,9 @@ public class BierRepository extends AbstractRepository {
         }
     }
 
-    public int brouwer1GaatFailliet() throws SQLException {
-        var sqlBierenMetAlcoholVanaf85 = "UPDATE bieren SET brouwerId = 2 WHERE brouwerId = 1 AND alcohol < 8.5";
-        var sqlBierenMetAlcoholMeerDan85 = "UPDATE bieren SET brouwerId = 3 WHERE brouwerId = 1 AND alcohol >= 8.5";
+    public void brouwer1GaatFailliet() throws SQLException {
+        var sqlBierenMetAlcoholVanaf85 = "UPDATE bieren SET brouwerId = 2 WHERE brouwerId = 1 AND alcohol >= 8.5";
+        var sqlBierenMetAlcoholMeerDan85 = "UPDATE bieren SET brouwerId = 3 WHERE brouwerId = 1";
         var sqlVerwijderBrouwer1 = "DELETE FROM brouwers WHERE id = 1";
         try (var connection = super.getConnection();
              var statementBierenMetAlcoholVanaf85 = connection.prepareStatement(sqlBierenMetAlcoholVanaf85);
@@ -25,7 +25,6 @@ public class BierRepository extends AbstractRepository {
             statementBierenMetAlcoholMeerDan85.executeUpdate();
             statementVerwijderBrouwer1.executeUpdate();
             connection.commit();
-            return statementBierenMetAlcoholVanaf85.executeUpdate() + statementBierenMetAlcoholMeerDan85.executeUpdate();
         }
     }
 }

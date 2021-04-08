@@ -69,8 +69,7 @@ class Main {
 
         var repository1 = new BierRepository();
         try {
-            System.out.print(repository1.brouwer1GaatFailliet());
-            System.out.println(" bieren aangepast.");
+            repository1.brouwer1GaatFailliet();
         } catch (SQLException ex) {
             ex.printStackTrace(System.err);
         }
