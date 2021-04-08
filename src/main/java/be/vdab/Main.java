@@ -66,5 +66,13 @@ class Main {
         } catch (SQLException ex) {
             ex.printStackTrace(System.err);
         }
+
+        var repository1 = new BierRepository();
+        try {
+            System.out.print(repository1.brouwer1GaatFailliet());
+            System.out.println(" bieren aangepast.");
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.err);
+        }
     }
 }
