@@ -22,7 +22,7 @@ class Main {
         var repository2 = new BrouwerRepository();
         try {
             System.out.println("De gemiddelde omzet van alle brouwers: ");
-            System.out.print(repository2.toonGemiddeldeOmzetVanAlleBrouwers()+"\n");
+            System.out.print(repository2.toonGemiddeldeOmzetVanAlleBrouwers() + "\n");
             repository2.brouwersOmzetHebbenDieHogerDanGemiddelde().forEach(System.out::println);
         } catch (SQLException ex) {
             ex.printStackTrace(System.err);
@@ -36,7 +36,7 @@ class Main {
         var max = scanner2.nextDouble();
         var repository3 = new BrouwerRepository();
         try {
-            System.out.println("De omzetten tussen "+min+" en "+max+" : ");
+            System.out.println("De omzetten tussen " + min + " en " + max + " : ");
             repository3.brouwersWaarvanOmzetLigtTussenMinimumEnMaximum(min, max).forEach(System.out::println);
         } catch (SQLException ex) {
             ex.printStackTrace(System.err);
@@ -62,7 +62,7 @@ class Main {
         var maximum = scanner5.nextDouble();
         var repository5 = new BrouwerRepository();
         try {
-            System.out.println("De omzetten tussen "+minimum+" en "+maximum+" : ");
+            System.out.println("De omzetten tussen " + minimum + " en " + maximum + " : ");
             repository5.brouwersWaarvanOmzetLigtTussenMinEnMaxMetStoredProcedure(minimum, maximum).forEach(System.out::println);
         } catch (SQLException ex) {
             ex.printStackTrace(System.err);
@@ -90,19 +90,24 @@ class Main {
             ex.printStackTrace(System.err);
         }
 
-        var repository7= new BrouwerRepository();
+        var repository7 = new BrouwerRepository();
         try {
             repository7.vindBrouwersEnHunBieren().forEach(System.out::println);
-        } catch (SQLException ex){
+        } catch (SQLException ex) {
             ex.printStackTrace(System.err);
         }
 
-        System.out.print("Naam van een bier soort:");
+        System.out.print("Naam van een bier soort: ");
         var scanner7 = new Scanner(System.in);
         var soort = scanner7.nextLine();
         var repository8 = new SoortRepository();
         try {
-            repository8.vindBierenVanSoort(soort).forEach(System.out::println);
+            var namen = repository8.vindBierenVanSoort(soort);
+            if (namen.isEmpty()) {
+                System.out.println("Geen bieren gevonden");
+            } else {
+                namen.forEach(System.out::println);
+            }
         } catch (SQLException ex) {
             ex.printStackTrace(System.err);
         }
