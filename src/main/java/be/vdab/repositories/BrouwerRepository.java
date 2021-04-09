@@ -83,7 +83,7 @@ public class BrouwerRepository extends AbstractRepository {
     public List<BrouwerNaamEnAantalBieren> vindBrouwersEnHunBieren() throws SQLException {
         try (var connection = super.getConnection();
              var statement = connection.prepareStatement(
-                     "SELECT brouwers.naam AS brouwernaam, count(brouwerId) AS aantalbieren FROM bieren INNER JOIN brouwers ON bieren.brouwerId=brouwers.id GROUP BY brouwers.naam")) {
+                     "SELECT brouwers.naam AS brouwernaam, count(brouwerId) AS aantalbieren FROM bieren INNER JOIN brouwers ON bieren.brouwerId=brouwers.id GROUP BY brouwers.naam ORDER BY brouwers.naam")) {
             connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
             connection.setAutoCommit(false);
             var list = new ArrayList<BrouwerNaamEnAantalBieren>();
