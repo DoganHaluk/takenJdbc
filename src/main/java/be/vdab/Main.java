@@ -2,6 +2,7 @@ package be.vdab;
 
 import be.vdab.repositories.BierRepository;
 import be.vdab.repositories.BrouwerRepository;
+import be.vdab.repositories.SoortRepository;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -93,6 +94,16 @@ class Main {
         try {
             repository7.vindBrouwersEnHunBieren().forEach(System.out::println);
         } catch (SQLException ex){
+            ex.printStackTrace(System.err);
+        }
+
+        System.out.print("Naam van een bier soort:");
+        var scanner7 = new Scanner(System.in);
+        var soort = scanner7.nextLine();
+        var repository8 = new SoortRepository();
+        try {
+            repository8.vindBierenVanSoort(soort).forEach(System.out::println);
+        } catch (SQLException ex) {
             ex.printStackTrace(System.err);
         }
     }
