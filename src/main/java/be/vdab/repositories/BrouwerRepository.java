@@ -1,8 +1,10 @@
 package be.vdab.repositories;
 
 import be.vdab.domain.Brouwers;
+import be.vdab.dto.BrouwerNaamEnAantalBieren;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -75,6 +77,22 @@ public class BrouwerRepository extends AbstractRepository {
                 brouwers.add(naarBrouwer(result));
             }
             return brouwers;
+        }
+    }
+
+    public List<BrouwerNaamEnAantalBieren> vindBrouwersEnHunBieren() throws SQLException {
+        try (var connection = super.getConnection();
+             var statement = connection.prepareStatement(
+                     "SELECT brouwers.naam AS brouwernaam, count(brouwerId) AS aantalbieren FROM bieren INNER JOIN brouwers ON bieren.brouwerId=brouwers.id GROUP BY brouwers.naam")) {
+            connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+            connection.setAutoCommit(false);
+            var list = new ArrayList<BrouwerNaamEnAantalBieren>();
+            var result = statement.executeQuery();
+            while (result.next()) {
+                list.add(new BrouwerNaamEnAantalBieren(result.getString("brouwernaam"), result.getLong("aantalbieren")));
+            }
+            connection.commit();
+            return list;
         }
     }
 }

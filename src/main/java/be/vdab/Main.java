@@ -4,8 +4,6 @@ import be.vdab.repositories.BierRepository;
 import be.vdab.repositories.BrouwerRepository;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 class Main {
@@ -88,6 +86,13 @@ class Main {
             System.out.print("De bieren die voor het eerst verkocht zijn in die maand: \n");
             repository6.vindAlBierenInEenMaand(maand).forEach(System.out::println);
         } catch (SQLException ex) {
+            ex.printStackTrace(System.err);
+        }
+
+        var repository7= new BrouwerRepository();
+        try {
+            repository7.vindBrouwersEnHunBieren().forEach(System.out::println);
+        } catch (SQLException ex){
             ex.printStackTrace(System.err);
         }
     }
