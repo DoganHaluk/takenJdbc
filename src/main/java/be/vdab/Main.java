@@ -30,10 +30,10 @@ class Main {
             ex.printStackTrace(System.err);
         }
 
-        System.out.print("Min:");
+        System.out.print("Minimum omzet: ");
         var scanner1 = new Scanner(System.in);
         var min = scanner1.nextDouble();
-        System.out.print("Max:");
+        System.out.print("Maximum omzet: ");
         var scanner2 = new Scanner(System.in);
         var max = scanner2.nextDouble();
         var repository3 = new BrouwerRepository();
@@ -44,7 +44,7 @@ class Main {
             ex.printStackTrace(System.err);
         }
 
-        System.out.print("id:");
+        System.out.print("Brouwer id: ");
         var scanner3 = new Scanner(System.in);
         var id = scanner3.nextLong();
         var repository4 = new BrouwerRepository();
@@ -56,10 +56,10 @@ class Main {
             ex.printStackTrace(System.err);
         }
 
-        System.out.print("Min:");
+        System.out.print("Min omzet:");
         var scanner4 = new Scanner(System.in);
         var minimum = scanner4.nextDouble();
-        System.out.print("Max:");
+        System.out.print("Max omzet:");
         var scanner5 = new Scanner(System.in);
         var maximum = scanner5.nextDouble();
         var repository5 = new BrouwerRepository();
@@ -77,7 +77,7 @@ class Main {
             ex.printStackTrace(System.err);
         }
 
-        System.out.print("Maand:");
+        System.out.print("Maand: ");
         var scanner6 = new Scanner(System.in);
         var maand = scanner6.nextInt();
         while (maand < 1 || maand > 12) {
