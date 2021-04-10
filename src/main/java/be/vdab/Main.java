@@ -5,6 +5,8 @@ import be.vdab.repositories.BrouwerRepository;
 import be.vdab.repositories.SoortRepository;
 
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Scanner;
 
 class Main {
@@ -107,6 +109,30 @@ class Main {
                 System.out.println("Geen bieren gevonden");
             } else {
                 namen.forEach(System.out::println);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.err);
+        }
+
+        var brouwerIds = new LinkedHashSet<Long>();
+        var scanner8 = new Scanner(System.in);
+        System.out.print("Brouwer id (0 om te stoppen): ");
+        for (long brouwerId; (brouwerId = scanner8.nextLong()) != 0; ) {
+            if (brouwerId < 0) {
+                System.out.print("Nummer moet positief zijn, probeer opnieuw:");
+            } else {
+                if (!brouwerIds.add(brouwerId)) {
+                    System.out.print(brouwerId + " reeds getypt, probeer opnieuw:");
+                }
+            }
+        }
+        var repository10 = new BrouwerRepository();
+        try {
+            if (repository10.maakDeOmzetVanDeBrouwersLeeg(brouwerIds) != brouwerIds.size()) {
+                System.out.println("Niet gevonden ids: ");
+                var gevondenIds = repository10.vindIdsDieNietBestaan(brouwerIds);
+                brouwerIds.stream().filter(brouwerId -> !gevondenIds.contains(brouwerId))
+                        .forEach(System.out::println);
             }
         } catch (SQLException ex) {
             ex.printStackTrace(System.err);

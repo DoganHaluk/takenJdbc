@@ -7,9 +7,7 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class BrouwerRepository extends AbstractRepository {
     public BigDecimal toonGemiddeldeOmzetVanAlleBrouwers() throws SQLException {
@@ -93,6 +91,47 @@ public class BrouwerRepository extends AbstractRepository {
             }
             connection.commit();
             return list;
+        }
+    }
+
+    public int maakDeOmzetVanDeBrouwersLeeg(Set<Long> ids) throws SQLException {
+        if (ids.isEmpty()) {
+            return 0;
+        }
+        try (var connection = super.getConnection();
+             var statementUpdate = connection.prepareStatement(
+                     "UPDATE brouwers SET omzet=null WHERE id IN (" + "?,".repeat(ids.size() - 1) + "?)")) {
+            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            connection.setAutoCommit(false);
+            var index = 1;
+            for (var id : ids) {
+                statementUpdate.setLong(index++, id);
+            }
+            var omzetAangepast = statementUpdate.executeUpdate();
+            connection.commit();
+            return omzetAangepast;
+        }
+    }
+
+    public Set<Long> vindIdsDieNietBestaan(Set<Long> ids) throws SQLException {
+        if (ids.isEmpty()) {
+            return Set.of();
+        }
+        try (var connection = super.getConnection();
+             var statementSelect = connection.prepareStatement(
+                     "SELECT id FROM brouwers WHERE id IN (" + "?,".repeat(ids.size() - 1) + "?)")) {
+            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            connection.setAutoCommit(false);
+            var index = 1;
+            for (var id : ids) {
+                statementSelect.setLong(index++, id);
+            }
+            var gevondenIds = new HashSet<Long>();
+            var result = statementSelect.executeQuery();
+            while (result.next()) {
+                gevondenIds.add(result.getLong("id"));
+            }
+            return gevondenIds;
         }
     }
 }
